@@ -8,7 +8,7 @@ pygame.init()
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
-screen = pygame.display.set_mode((2560,1440))
+screen = pygame.display.set_mode((2560,1440),)
 
 charge = pygame.image.load("basketball.png")
 charge_fixed = pygame.image.load("basketball.png")
@@ -80,13 +80,42 @@ def main():
 		 x_c = pygame.mouse.get_pos()[0] - 36
 		 y_c = pygame.mouse.get_pos()[1] - 36
 		 updateScreen(x_c,y_c,x_cf,y_cf,x_h,y_h)
+		
+		if v_x < -3 and x_c < 20:
+				pygame.mixer.music.load("bounce.mp3")
+				pygame.mixer.music.play()
+				pygame.time.delay(12)
+		
+		if x_c <= 0:
+			v_x = -v_x
+			x_c = 0
+		
+		if v_x > 3 and x_c > 2469:
+				pygame.mixer.music.load("bounce.mp3")
+				pygame.mixer.music.play()
+				pygame.time.delay(12)
 
-		if x_c <= 0 or x_c >= 2489:
-			v_x = -v_x*0.7
+		if x_c >= 2489:
+			v_x = -v_x
+			x_c = 2489
+			
+		if v_y > 3 and y_c > 1348:
+				pygame.mixer.music.load("bounce.mp3")
+				pygame.mixer.music.play()
+				pygame.time.delay(12)
 
 		if y_c >= 1368:
 			v_y = -v_y
 			y_c = 1368
+		print(x_h)
+		print(x_c)
+		print(y_h)
+		print(y_c)
+		if  x_h+10 < x_c < x_h+286 and y_h-4 < y_c < y_h+4 and v_y > 0:
+				pygame.mixer.music.load("swish.mp3")
+				pygame.mixer.music.play()
+				pygame.time.delay(12)
+
 
 		if keys[pygame.K_UP]:
 			x_c = 1244
@@ -134,4 +163,4 @@ def main():
 
 main()
 
-
+#make sound its own function and make it play slightly early
