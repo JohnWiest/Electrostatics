@@ -12,18 +12,20 @@ screen = pygame.display.set_mode((2560,1440),)
 
 charge = pygame.image.load("basketball.png")
 charge_fixed = pygame.image.load("basketball.png")
-hoop = pygame.image.load("hoop.png")
+backboard = pygame.image.load("backboard.png")
+net = pygame.image.load("net.png")
 
-def updateScreen(x_c,y_c,x_cf,y_cf,x_h,y_h):
+def updateScreen(x_c,y_c,x_cf,y_cf,x_b,y_b,x_n,y_n):
 	screen.fill((0,0,0))
-	screen.blit(charge,(x_c,y_c))
-	screen.blit(charge_fixed,(x_cf,y_cf))
-	screen.blit(hoop,(x_h,y_h))
+	screen.blit(backboard,(x_b,x_b))
+	screen.blit(charge,(x_c-35.5,y_c-36))
+	screen.blit(charge_fixed,(x_cf-35.5,y_cf-36))
+	screen.blit(net,(x_n,y_n))
 	pygame.display.update()
 	return
 
 def forceGravity(m):
-	a_g = 0.3
+	a_g = 0.33
 	F_g = m*a_g
 	return F_g
 
@@ -54,10 +56,12 @@ def hoopMove(x_h,y_h):
 def main():
 	x_c = 1244
 	y_c = 200
-	x_cf = 1244
-	y_cf = 1000
-	x_h = 300
-	y_h = 300
+	x_cf = 2260
+	y_cf = 1140
+	x_b = 300
+	y_b = 300
+	x_n = x_b+60
+	y_n = y_b+130
 	v_x = 0
 	v_y = 0
 	m = 1
@@ -74,12 +78,26 @@ def main():
 
 		keys = pygame.key.get_pressed()
 
+		if keys[pygame.K_1]:
+			x_cf = 1660
+			y_cf = 1140
+
+		if keys[pygame.K_2]:
+			x_cf = 1960
+			y_cf = 1140
+
+		if keys[pygame.K_3]:
+			x_cf = 2260
+			y_cf = 1140
+
+
+
 		if pygame.mouse.get_pressed()[0]:
 		 v_x = 0
 		 v_y = 0
-		 x_c = pygame.mouse.get_pos()[0] - 36
-		 y_c = pygame.mouse.get_pos()[1] - 36
-		 updateScreen(x_c,y_c,x_cf,y_cf,x_h,y_h)
+		 x_c = pygame.mouse.get_pos()[0]
+		 y_c = pygame.mouse.get_pos()[1]
+		 updateScreen(x_c,y_c,x_cf,y_cf,x_b,y_b,x_n,y_n)
 		
 		if v_x < -3 and x_c < 20:
 				pygame.mixer.music.load("bounce.mp3")
@@ -107,11 +125,8 @@ def main():
 		if y_c >= 1368:
 			v_y = -v_y
 			y_c = 1368
-		print(x_h)
-		print(x_c)
-		print(y_h)
-		print(y_c)
-		if  x_h+10 < x_c < x_h+286 and y_h-4 < y_c < y_h+4 and v_y > 0:
+	
+		if  x_n+11 < x_c < x_n+131 and y_n-4 < y_c < y_n+15 and v_y > 0:
 				pygame.mixer.music.load("swish.mp3")
 				pygame.mixer.music.play()
 				pygame.time.delay(12)
@@ -156,7 +171,7 @@ def main():
 		#print(x_c)
 		y_c = updatePosition(x_c,y_c,v_x,v_y)[1]
 		#print(y_c)
-		updateScreen(x_c,y_c,x_cf,y_cf,x_h,y_h)
+		updateScreen(x_c,y_c,x_cf,y_cf,x_b,y_b,x_n,y_n)
 
 	pygame.quit()
 	return
